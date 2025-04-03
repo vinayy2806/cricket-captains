@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        IMAGE_NAME = "vinayy2806/cricket-captains"
+        IMAGE_NAME = "06ains"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         EC2_PUBLIC_IP = "34.207.234.31" // Replace with your EC2 public IP
     }
@@ -47,7 +47,7 @@ pipeline {
             cleanWs()
         }
         success {
-            echo "Website deployed successfully at http://${EC2_PUBLIC_IP}"
+            echo "Website deployed successfully at http://${34.207.234.31}/index.html"
         }
     }
 }
