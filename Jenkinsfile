@@ -31,7 +31,7 @@
             cleanWs() // Clean workspace after build
         }
         success {
-            echo "Website deployed successfully at http://${EC2_PUBLIC_IP}"
+            echo "Website deployed successfully at http://${34.207.234.31}"
         }
     }
 }
