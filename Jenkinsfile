@@ -2,9 +2,9 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        IMAGE_NAME = "06ains"
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
-        EC2_PUBLIC_IP = "34.207.234.31" // Replace with your EC2 public IP
+        IMAGE_NAME = "vinayy2806/cricket-captains" // Your Docker Hub username/repo
+        IMAGE_TAG = "${env.BUILD_NUMBER}"         // Build number as tag
+        EC2_PUBLIC_IP = "34.207.234.31"      // Replace with your EC2 public IP
     }
     stages {
         stage('Checkout') {
@@ -32,12 +32,9 @@ pipeline {
         stage('Deploy on EC2') {
             steps {
                 script {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} '
-                        docker stop cricket-captains || true &&
-                        docker rm cricket-captains || true &&
-                        docker run -d --name cricket-captains -p 80:80 ${IMAGE_NAME}:${IMAGE_TAG}'
-                    """
+                    sh "docker stop cricket-captains || true"
+                    sh "docker rm cricket-captains || true"
+                    sh "docker run -d --name cricket-captains -p 80:80 ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
@@ -47,7 +44,7 @@ pipeline {
             cleanWs()
         }
         success {
-            echo "Website deployed successfully at http://${EC2_PUBLIC_IP}/index.html"
+            echo "Website deployed successfully at http://${EC2_PUBLIC_IP}"
         }
     }
 }
