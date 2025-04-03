@@ -32,9 +32,12 @@ pipeline {
         stage('Deploy on EC2') {
             steps {
                 script {
-                    sh "docker stop cricket-captains || true"
-                    sh "docker rm cricket-captains || true"
-                    sh "docker run -d --name cricket-captains -p 80:80 ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ec2-user@${34.207.234.31} '
+                        docker stop cricket-captains || true &&
+                        docker rm cricket-captains || true &&
+                        docker run -d --name cricket-captains -p 80:80 ${IMAGE_NAME}:${IMAGE_TAG}'
+                    """
                 }
             }
         }
