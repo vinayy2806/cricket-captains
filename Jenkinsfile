@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        ssh -o StrictHostKeyChecking=no ec2-user@${34.207.234.31} '
+                        ssh -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} '
                         docker stop cricket-captains || true &&
                         docker rm cricket-captains || true &&
                         docker run -d --name cricket-captains -p 80:80 ${IMAGE_NAME}:${IMAGE_TAG}'
@@ -47,7 +47,7 @@ pipeline {
             cleanWs()
         }
         success {
-            echo "Website deployed successfully at http://${34.207.234.31}/index.html"
+            echo "Website deployed successfully at http://${EC2_PUBLIC_IP}/index.html"
         }
     }
 }
