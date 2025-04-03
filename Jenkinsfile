@@ -1,3 +1,16 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        IMAGE_NAME = "vinayy2806/cricket-captains" // Your Docker Hub username
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        EC2_PUBLIC_IP = "34.207.234.31" // Replace with your EC2 public IP
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/vinayy2806/cricket-captains.git'
+            }
         }
         stage('Build Docker Image') {
             steps {
@@ -21,18 +34,17 @@
                 script {
                     sh "docker stop cricket-captains || true"
                     sh "docker rm cricket-captains || true"
-                    sh "docker run -d --name cricket-captains -p 882:80 ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker run -d --name cricket-captains -p 80:80 ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
     }
     post {
         always {
-            cleanWs() // Clean workspace after build
+            cleanWs()
         }
         success {
-            echo "Website deployed successfully at http://${34.207.234.31}"
+            echo "Website deployed successfully at http://${EC2_PUBLIC_IP}"
         }
     }
 }
-                        
